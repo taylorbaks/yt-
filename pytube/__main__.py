@@ -186,6 +186,7 @@ class YouTube:
 
         stream_manifest = extract.apply_descrambler(self.streaming_data)
 
+        # [DISABLE this try-except block -> for workaround, if pytube is slow af] https://github.com/pytube/pytube/issues/1453
         # If the cached js doesn't work, try fetching a new js file
         # https://github.com/pytube/pytube/issues/1054
         try:
