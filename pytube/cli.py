@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """A simple command line application to download youtube videos."""
+
 import argparse
+import datetime as dt
 import gzip
 import json
 import logging
 import os
 import shutil
-import sys
-import datetime as dt
 import subprocess  # nosec
+import sys
 from typing import List, Optional
 
 import pytube.exceptions as exceptions
-from pytube import __version__
-from pytube import CaptionQuery, Playlist, Stream, YouTube
+from pytube import CaptionQuery, Playlist, Stream, YouTube, __version__
 from pytube.helpers import safe_filename, setup_logger
+from pytube.logging import base_logger
 
-
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 
 def main():
@@ -30,7 +30,7 @@ def main():
         if args.logfile:
             log_filename = args.logfile
         setup_logger(logging.DEBUG, log_filename=log_filename)
-        logger.debug(f'Pytube version: {__version__}')
+        logger.debug(f"tuber.pytubeversion: {__version__}")
 
     if not args.url or "youtu" not in args.url:
         parser.print_help()
@@ -56,7 +56,7 @@ def main():
 def _perform_args_on_youtube(
     youtube: YouTube, args: argparse.Namespace
 ) -> None:
-    if len(sys.argv) == 2 :  # no arguments parsed
+    if len(sys.argv) == 2:  # no arguments parsed
         download_highest_resolution_progressive(
             youtube=youtube, resolution="highest", target=args.target
         )
@@ -93,10 +93,14 @@ def _parse_args(
         "url", help="The YouTube /watch or /playlist url", nargs="?"
     )
     parser.add_argument(
-        "--version", action="version", version="%(prog)s " + __version__,
+        "--version",
+        action="version",
+        version="%(prog)s " + __version__,
     )
     parser.add_argument(
-        "--itag", type=int, help="The itag for the desired stream",
+        "--itag",
+        type=int,
+        help="The itag for the desired stream",
     )
     parser.add_argument(
         "-r",
@@ -109,7 +113,7 @@ def _parse_args(
         "--list",
         action="store_true",
         help=(
-            "The list option causes pytube cli to return a list of streams "
+            "The list option causes tuber.pytubecli to return a list of streams "
             "available to download"
         ),
     )
@@ -140,12 +144,10 @@ def _parse_args(
         ),
     )
     parser.add_argument(
-        '-lc',
-        '--list-captions',
-        action='store_true',
-        help=(
-            "List available caption codes for a video"
-        )
+        "-lc",
+        "--list-captions",
+        action="store_true",
+        help=("List available caption codes for a video"),
     )
     parser.add_argument(
         "-t",
@@ -240,9 +242,7 @@ def display_progress_bar(
 
 
 # noinspection PyUnusedLocal
-def on_progress(
-    stream: Stream, chunk: bytes, bytes_remaining: int
-) -> None:  # pylint: disable=W0613
+def on_progress(stream: Stream, chunk: bytes, bytes_remaining: int) -> None:  # pylint: disable=W0613
     filesize = stream.filesize
     bytes_received = filesize - bytes_remaining
     display_progress_bar(bytes_received, filesize)

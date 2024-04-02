@@ -1,4 +1,5 @@
-"""Various helper functions implemented by pytube."""
+"""Various helper functions implemented by pytube ."""
+
 import functools
 import gzip
 import json
@@ -10,14 +11,15 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar
 from urllib import request
 
 from pytube.exceptions import RegexMatchError
+from pytube.logging import base_logger
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 
 class DeferredGeneratorList:
     """A wrapper class for deferring list generation.
 
-    Pytube has some continuation generators that create web calls, which means
+    tuber.pytubehas some continuation generators that create web calls, which means
     that any time a full list is requested, all of those web calls must be
     made at once, which could lead to slowdowns. This will allow individual
     elements to be queried, so that slowdowns only happen as necessary. For
@@ -25,6 +27,7 @@ class DeferredGeneratorList:
     all simultaneously. This should allow for speed improvements for playlist
     and channel interactions.
     """
+
     def __init__(self, generator):
         """Construct a :class:`DeferredGeneratorList <DeferredGeneratorList>`.
 
@@ -44,7 +47,7 @@ class DeferredGeneratorList:
         """Only generate items as they're asked for."""
         # We only allow querying with indexes.
         if not isinstance(key, (int, slice)):
-            raise TypeError('Key must be either a slice or int.')
+            raise TypeError("Key must be either a slice or int.")
 
         # Convert int keys to slice
         key_slice = key
@@ -177,7 +180,9 @@ def safe_filename(s: str, max_length: int = 255) -> str:
     return filename[:max_length].rsplit(" ", 0)[0]
 
 
-def setup_logger(level: int = logging.ERROR, log_filename: Optional[str] = None) -> None:
+def setup_logger(
+    level: int = logging.ERROR, log_filename: Optional[str] = None
+) -> None:
     """Create a configured instance of logger.
 
     :param int level:
@@ -205,7 +210,7 @@ GenericType = TypeVar("GenericType")
 
 
 def cache(func: Callable[..., GenericType]) -> GenericType:
-    """ mypy compatible annotation wrapper for lru_cache"""
+    """mypy compatible annotation wrapper for lru_cache"""
     return functools.lru_cache()(func)  # type: ignore
 
 
@@ -286,12 +291,12 @@ def generate_all_html_json_mocks():
     This should automatically output to the test/mocks directory.
     """
     test_vid_ids = [
-        '2lAe1cqCOXo',
-        '5YceQ8YqYMc',
-        'irauhITDrsE',
-        'm8uHb5jIGN8',
-        'QRS8MkLhQmM',
-        'WXxV9g7lsFE'
+        "2lAe1cqCOXo",
+        "5YceQ8YqYMc",
+        "irauhITDrsE",
+        "m8uHb5jIGN8",
+        "QRS8MkLhQmM",
+        "WXxV9g7lsFE",
     ]
     for vid_id in test_vid_ids:
         create_mock_html_json(vid_id)
@@ -307,29 +312,27 @@ def create_mock_html_json(vid_id) -> Dict[str, Any]:
         Dict used to generate the json.gz file
     """
     from pytube import YouTube
-    gzip_filename = 'yt-video-%s-html.json.gz' % vid_id
 
-    # Get the pytube directory in order to navigate to /tests/mocks
+    gzip_filename = "yt-video-%s-html.json.gz" % vid_id
+
+    # Get the tuber.pytubedirectory in order to navigate to /tests/mocks
     pytube_dir_path = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            os.path.pardir
-        )
+        os.path.join(os.path.dirname(__file__), os.path.pardir)
     )
-    pytube_mocks_path = os.path.join(pytube_dir_path, 'tests', 'mocks')
+    pytube_mocks_path = os.path.join(pytube_dir_path, "tests", "mocks")
     gzip_filepath = os.path.join(pytube_mocks_path, gzip_filename)
 
-    yt = YouTube(f'https://www.youtube.com/watch?v={vid_id}')
+    yt = YouTube(f"https://www.youtube.com/watch?v={vid_id}")
     html_data = {
-        'url': yt.watch_url,
-        'js': yt.js,
-        'embed_html': yt.embed_html,
-        'watch_html': yt.watch_html,
-        'vid_info': yt.vid_info
+        "url": yt.watch_url,
+        "js": yt.js,
+        "embed_html": yt.embed_html,
+        "watch_html": yt.watch_html,
+        "vid_info": yt.vid_info,
     }
 
-    logger.info(f'Outputing json.gz file to {gzip_filepath}')
-    with gzip.open(gzip_filepath, 'wb') as f:
-        f.write(json.dumps(html_data).encode('utf-8'))
+    logger.info(f"Outputing json.gz file to {gzip_filepath}")
+    with gzip.open(gzip_filepath, "wb") as f:
+        f.write(json.dumps(html_data).encode("utf-8"))
 
     return html_data

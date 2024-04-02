@@ -1,37 +1,41 @@
 """
-This module implements the core developer interface for pytube.
+This module implements the core developer interface for pytube .
 
 The problem domain of the :class:`YouTube <YouTube> class focuses almost
 exclusively on the developer interface. Pytube offloads the heavy lifting to
 smaller peripheral modules and functions.
 
 """
-import logging
+
 from typing import Any, Callable, Dict, List, Optional
 
 import pytube
 import pytube.exceptions as exceptions
-from pytube import extract, request
-from pytube import Stream, StreamQuery
+from pytube import Stream, StreamQuery, extract, request
 from pytube.helpers import install_proxy
 from pytube.innertube import InnerTube
+from pytube.logging import base_logger
 from pytube.metadata import YouTubeMetadata
 from pytube.monostate import Monostate
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild(__name__)
 
 
 class YouTube:
-    """Core developer interface for pytube."""
+    """Core developer interface for pytube ."""
 
     def __init__(
         self,
         url: str,
-        on_progress_callback: Optional[Callable[[Any, bytes, int], None]] = None,
-        on_complete_callback: Optional[Callable[[Any, Optional[str]], None]] = None,
+        on_progress_callback: Optional[
+            Callable[[Any, bytes, int], None]
+        ] = None,
+        on_complete_callback: Optional[
+            Callable[[Any, Optional[str]], None]
+        ] = None,
         proxies: Dict[str, str] = None,
         use_oauth: bool = False,
-        allow_oauth_cache: bool = True
+        allow_oauth_cache: bool = True,
     ):
         """Construct a :class:`YouTube <YouTube>`.
 
@@ -44,7 +48,7 @@ class YouTube:
             (Optional) User defined callback function for stream download
             complete events.
         :param dict proxies:
-            (Optional) A dict mapping protocol to proxy address which will be used by pytube.
+            (Optional) A dict mapping protocol to proxy address which will be used by pytube .
         :param bool use_oauth:
             (Optional) Prompt the user to authenticate to YouTube.
             If allow_oauth_cache is set to True, the user should only be prompted once.
@@ -53,13 +57,21 @@ class YouTube:
             These tokens are only generated if use_oauth is set to True as well.
         """
         self._js: Optional[str] = None  # js fetched by js_url
-        self._js_url: Optional[str] = None  # the url to the js, parsed from watch html
+        self._js_url: Optional[str] = (
+            None  # the url to the js, parsed from watch html
+        )
 
-        self._vid_info: Optional[Dict] = None  # content fetched from innertube/player
+        self._vid_info: Optional[Dict] = (
+            None  # content fetched from innertube/player
+        )
 
-        self._watch_html: Optional[str] = None  # the html of /watch?v=<video_id>
+        self._watch_html: Optional[str] = (
+            None  # the html of /watch?v=<video_id>
+        )
         self._embed_html: Optional[str] = None
-        self._player_config_args: Optional[Dict] = None  # inline js in the html containing
+        self._player_config_args: Optional[Dict] = (
+            None  # inline js in the html containing
+        )
         self._age_restricted: Optional[bool] = None
 
         self._fmt_streams: Optional[List[Stream]] = None
@@ -89,7 +101,7 @@ class YouTube:
         self.allow_oauth_cache = allow_oauth_cache
 
     def __repr__(self):
-        return f'<pytube.__main__.YouTube object: videoId={self.video_id}>'
+        return f"<pytube .__main__.YouTube object: videoId={self.video_id}>"
 
     def __eq__(self, o: object) -> bool:
         # Compare types and urls, if they're same return true, else return false.
@@ -154,11 +166,11 @@ class YouTube:
     @property
     def streaming_data(self):
         """Return streamingData from video info."""
-        if 'streamingData' in self.vid_info:
-            return self.vid_info['streamingData']
+        if "streamingData" in self.vid_info:
+            return self.vid_info["streamingData"]
         else:
             self.bypass_age_gate()
-            return self.vid_info['streamingData']
+            return self.vid_info["streamingData"]
 
     @property
     def fmt_streams(self):
@@ -210,26 +222,28 @@ class YouTube:
         status, messages = extract.playability_status(self.watch_html)
 
         for reason in messages:
-            if status == 'UNPLAYABLE':
+            if status == "UNPLAYABLE":
                 if reason == (
-                    'Join this channel to get access to members-only content '
-                    'like this video, and other exclusive perks.'
+                    "Join this channel to get access to members-only content "
+                    "like this video, and other exclusive perks."
                 ):
                     raise exceptions.MembersOnly(video_id=self.video_id)
-                elif reason == 'This live stream recording is not available.':
-                    raise exceptions.RecordingUnavailable(video_id=self.video_id)
+                elif reason == "This live stream recording is not available.":
+                    raise exceptions.RecordingUnavailable(
+                        video_id=self.video_id
+                    )
                 else:
                     raise exceptions.VideoUnavailable(video_id=self.video_id)
-            elif status == 'LOGIN_REQUIRED':
+            elif status == "LOGIN_REQUIRED":
                 if reason == (
-                    'This is a private video. '
-                    'Please sign in to verify that you may see it.'
+                    "This is a private video. "
+                    "Please sign in to verify that you may see it."
                 ):
                     raise exceptions.VideoPrivate(video_id=self.video_id)
-            elif status == 'ERROR':
-                if reason == 'Video unavailable':
+            elif status == "ERROR":
+                if reason == "Video unavailable":
                     raise exceptions.VideoUnavailable(video_id=self.video_id)
-            elif status == 'LIVE_STREAM':
+            elif status == "LIVE_STREAM":
                 raise exceptions.LiveStreamError(video_id=self.video_id)
 
     @property
@@ -241,7 +255,9 @@ class YouTube:
         if self._vid_info:
             return self._vid_info
 
-        innertube = InnerTube(use_oauth=self.use_oauth, allow_cache=self.allow_oauth_cache)
+        innertube = InnerTube(
+            use_oauth=self.use_oauth, allow_cache=self.allow_oauth_cache
+        )
 
         innertube_response = innertube.player(self.video_id)
         self._vid_info = innertube_response
@@ -250,17 +266,19 @@ class YouTube:
     def bypass_age_gate(self):
         """Attempt to update the vid_info by bypassing the age gate."""
         innertube = InnerTube(
-            client='ANDROID_EMBED',
+            client="ANDROID_EMBED",
             use_oauth=self.use_oauth,
-            allow_cache=self.allow_oauth_cache
+            allow_cache=self.allow_oauth_cache,
         )
         innertube_response = innertube.player(self.video_id)
 
-        playability_status = innertube_response['playabilityStatus'].get('status', None)
+        playability_status = innertube_response["playabilityStatus"].get(
+            "status", None
+        )
 
         # If we still can't access the video, raise an exception
         # (tier 3 age restriction)
-        if playability_status == 'UNPLAYABLE':
+        if playability_status == "UNPLAYABLE":
             raise exceptions.AgeRestrictedError(self.video_id)
 
         self._vid_info = innertube_response
@@ -338,15 +356,15 @@ class YouTube:
             return self._title
 
         try:
-            self._title = self.vid_info['videoDetails']['title']
+            self._title = self.vid_info["videoDetails"]["title"]
         except KeyError:
             # Check_availability will raise the correct exception in most cases
             #  if it doesn't, ask for a report.
             self.check_availability()
             raise exceptions.PytubeError(
                 (
-                    f'Exception while accessing title of {self.watch_url}. '
-                    'Please file a bug report at https://github.com/pytube/pytube'
+                    f"Exception while accessing title of {self.watch_url}. "
+                    "Please file a bug report at https://github.com/pytube/pytube"
                 )
             )
 
@@ -380,7 +398,7 @@ class YouTube:
 
         :rtype: int
         """
-        return int(self.vid_info.get('videoDetails', {}).get('lengthSeconds'))
+        return int(self.vid_info.get("videoDetails", {}).get("lengthSeconds"))
 
     @property
     def views(self) -> int:
@@ -413,7 +431,7 @@ class YouTube:
 
         :rtype: List[str]
         """
-        return self.vid_info.get('videoDetails', {}).get('keywords', [])
+        return self.vid_info.get("videoDetails", {}).get("keywords", [])
 
     @property
     def channel_id(self) -> str:
@@ -421,7 +439,7 @@ class YouTube:
 
         :rtype: str
         """
-        return self.vid_info.get('videoDetails', {}).get('channelId', None)
+        return self.vid_info.get("videoDetails", {}).get("channelId", None)
 
     @property
     def channel_url(self) -> str:
@@ -429,7 +447,7 @@ class YouTube:
 
         :rtype: str
         """
-        return f'https://www.youtube.com/channel/{self.channel_id}'
+        return f"https://www.youtube.com/channel/{self.channel_id}"
 
     @property
     def metadata(self) -> Optional[YouTubeMetadata]:
@@ -443,7 +461,9 @@ class YouTube:
             self._metadata = extract.metadata(self.initial_data)
             return self._metadata
 
-    def register_on_progress_callback(self, func: Callable[[Any, bytes, int], None]):
+    def register_on_progress_callback(
+        self, func: Callable[[Any, bytes, int], None]
+    ):
         """Register a download progress callback function post initialization.
 
         :param callable func:
@@ -455,7 +475,9 @@ class YouTube:
         """
         self.stream_monostate.on_progress = func
 
-    def register_on_complete_callback(self, func: Callable[[Any, Optional[str]], None]):
+    def register_on_complete_callback(
+        self, func: Callable[[Any, Optional[str]], None]
+    ):
         """Register a download complete callback function post initialization.
 
         :param callable func:
@@ -474,6 +496,6 @@ class YouTube:
             The video id of the YouTube video.
 
         :rtype: :class:`YouTube <YouTube>`
-        
+
         """
         return YouTube(f"https://www.youtube.com/watch?v={video_id}")
