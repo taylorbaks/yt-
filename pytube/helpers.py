@@ -13,6 +13,12 @@ from urllib import request
 from pytube.exceptions import RegexMatchError
 from pytube.logging import base_logger
 
+<<<<<<< HEAD
+=======
+from pytube.logging import base_logger
+
+
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 

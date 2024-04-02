@@ -2,7 +2,7 @@
 This module implements the core developer interface for pytube .
 
 The problem domain of the :class:`YouTube <YouTube> class focuses almost
-exclusively on the developer interface. Pytube offloads the heavy lifting to
+exclusively on the developer interface. tuber.pytubeoffloads the heavy lifting to
 smaller peripheral modules and functions.
 
 """
@@ -18,6 +18,12 @@ from pytube.logging import base_logger
 from pytube.metadata import YouTubeMetadata
 from pytube.monostate import Monostate
 
+<<<<<<< HEAD
+=======
+from pytube.logging import base_logger
+
+
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -229,9 +235,13 @@ class YouTube:
                 ):
                     raise exceptions.MembersOnly(video_id=self.video_id)
                 elif reason == "This live stream recording is not available.":
+<<<<<<< HEAD
                     raise exceptions.RecordingUnavailable(
                         video_id=self.video_id
                     )
+=======
+                    raise exceptions.RecordingUnavailable(video_id=self.video_id)
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 else:
                     raise exceptions.VideoUnavailable(video_id=self.video_id)
             elif status == "LOGIN_REQUIRED":
@@ -272,9 +282,13 @@ class YouTube:
         )
         innertube_response = innertube.player(self.video_id)
 
+<<<<<<< HEAD
         playability_status = innertube_response["playabilityStatus"].get(
             "status", None
         )
+=======
+        playability_status = innertube_response["playabilityStatus"].get("status", None)
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
         # If we still can't access the video, raise an exception
         # (tier 3 age restriction)
@@ -320,9 +334,7 @@ class YouTube:
         :rtype: str
         """
         thumbnail_details = (
-            self.vid_info.get("videoDetails", {})
-            .get("thumbnail", {})
-            .get("thumbnails")
+            self.vid_info.get("videoDetails", {}).get("thumbnail", {}).get("thumbnails")
         )
         if thumbnail_details:
             thumbnail_details = thumbnail_details[-1]  # last item has max size
@@ -415,9 +427,7 @@ class YouTube:
         """
         if self._author:
             return self._author
-        self._author = self.vid_info.get("videoDetails", {}).get(
-            "author", "unknown"
-        )
+        self._author = self.vid_info.get("videoDetails", {}).get("author", "unknown")
         return self._author
 
     @author.setter

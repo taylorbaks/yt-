@@ -13,16 +13,26 @@ from pytube.exceptions import MaxRetriesExceeded, RegexMatchError
 from pytube.helpers import regex_search
 from pytube.logging import base_logger
 
+<<<<<<< HEAD
+=======
+from pytube.logging import base_logger
+
+
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 default_range_size = 9437184  # 9MB
 
 
 def _execute_request(
+<<<<<<< HEAD
     url,
     method=None,
     headers=None,
     data=None,
     timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
+=======
+    url, method=None, headers=None, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 ):
     base_headers = {"User-Agent": "Mozilla/5.0", "accept-language": "en-US,en"}
     if headers:
@@ -79,9 +89,13 @@ def post(
     # required because the youtube servers are strict on content type
     # raises HTTPError [400]: Bad Request otherwise
     extra_headers.update({"Content-Type": "application/json"})
+<<<<<<< HEAD
     response = _execute_request(
         url, headers=extra_headers, data=data, timeout=timeout
     )
+=======
+    response = _execute_request(url, headers=extra_headers, data=data, timeout=timeout)
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     return response.read().decode("utf-8")
 
 
@@ -92,11 +106,15 @@ def seq_stream(url, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, max_retries=0):
     """
     # YouTube expects a request sequence number as part of the parameters.
     split_url = parse.urlsplit(url)
+<<<<<<< HEAD
     base_url = "%s://%s/%s?" % (
         split_url.scheme,
         split_url.netloc,
         split_url.path,
     )
+=======
+    base_url = "%s://%s/%s?" % (split_url.scheme, split_url.netloc, split_url.path)
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
     querys = dict(parse.parse_qsl(split_url.query))
 
@@ -173,9 +191,13 @@ def stream(url, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, max_retries=0):
         if file_size == default_range_size:
             try:
                 resp = _execute_request(
+<<<<<<< HEAD
                     url + f"&range={0}-{99999999999}",
                     method="GET",
                     timeout=timeout,
+=======
+                    url + f"&range={0}-{99999999999}", method="GET", timeout=timeout
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 )
                 content_range = resp.info()["Content-Length"]
                 file_size = int(content_range)
@@ -210,11 +232,15 @@ def seq_filesize(url):
     total_filesize = 0
     # YouTube expects a request sequence number as part of the parameters.
     split_url = parse.urlsplit(url)
+<<<<<<< HEAD
     base_url = "%s://%s/%s?" % (
         split_url.scheme,
         split_url.netloc,
         split_url.path,
     )
+=======
+    base_url = "%s://%s/%s?" % (split_url.scheme, split_url.netloc, split_url.path)
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     querys = dict(parse.parse_qsl(split_url.query))
 
     # The 0th sequential request provides the file headers, which tell us

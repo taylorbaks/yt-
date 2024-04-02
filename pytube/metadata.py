@@ -20,9 +20,13 @@ class YouTubeMetadata:
             if "simpleText" in contents:
                 self._metadata[-1][metadata_title] = contents["simpleText"]
             elif "runs" in contents:
+<<<<<<< HEAD
                 self._metadata[-1][metadata_title] = contents["runs"][0][
                     "text"
                 ]
+=======
+                self._metadata[-1][metadata_title] = contents["runs"][0]["text"]
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
             # Upon reaching a dividing line, create a new grouping
             if el.get("hasDividerLine", False):

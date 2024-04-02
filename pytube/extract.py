@@ -1,5 +1,9 @@
 """This module contains all non-cipher related data extraction logic."""
 
+<<<<<<< HEAD
+=======
+import urllib.parse
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 import re
 import urllib.parse
 from collections import OrderedDict
@@ -14,6 +18,13 @@ from pytube.logging import base_logger
 from pytube.metadata import YouTubeMetadata
 from pytube.parser import parse_for_all_objects, parse_for_object
 
+<<<<<<< HEAD
+=======
+
+from pytube.logging import base_logger
+
+
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -324,10 +335,14 @@ def get_ytplayer_config(html: str) -> Any:
         Substring of the html containing the encoded manifest data.
     """
     logger.debug("finding initial function name")
+<<<<<<< HEAD
     config_patterns = [
         r"ytplayer\.config\s*=\s*",
         r"ytInitialPlayerResponse\s*=\s*",
     ]
+=======
+    config_patterns = [r"ytplayer\.config\s*=\s*", r"ytInitialPlayerResponse\s*=\s*"]
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     for pattern in config_patterns:
         # Try each pattern consecutively if they don't find a match
         try:
@@ -417,9 +432,7 @@ def apply_signature(stream_manifest: Dict, vid_info: Dict, js: str) -> None:
 
         signature = cipher.get_signature(ciphered_signature=stream["s"])
 
-        logger.debug(
-            "finished descrambling signature for itag=%s", stream["itag"]
-        )
+        logger.debug("finished descrambling signature for itag=%s", stream["itag"])
         parsed_url = urlparse(url)
 
         # Convert query params off url to dict
@@ -489,19 +502,27 @@ def initial_data(watch_html: str) -> str:
     @param watch_html: Html of the watch page
     @return:
     """
+<<<<<<< HEAD
     patterns = [
         r"window\[['\"]ytInitialData['\"]]\s*=\s*",
         r"ytInitialData\s*=\s*",
     ]
+=======
+    patterns = [r"window\[['\"]ytInitialData['\"]]\s*=\s*", r"ytInitialData\s*=\s*"]
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     for pattern in patterns:
         try:
             return parse_for_object(watch_html, pattern)
         except HTMLParseError:
             pass
 
+<<<<<<< HEAD
     raise RegexMatchError(
         caller="initial_data", pattern="initial_data_pattern"
     )
+=======
+    raise RegexMatchError(caller="initial_data", pattern="initial_data_pattern")
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
 
 def initial_player_response(watch_html: str) -> str:
@@ -524,8 +545,12 @@ def initial_player_response(watch_html: str) -> str:
             pass
 
     raise RegexMatchError(
+<<<<<<< HEAD
         caller="initial_player_response",
         pattern="initial_player_response_pattern",
+=======
+        caller="initial_player_response", pattern="initial_player_response_pattern"
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     )
 
 
@@ -545,9 +570,15 @@ def metadata(initial_data) -> Optional[YouTubeMetadata]:
     :rtype: YouTubeMetadata
     """
     try:
+<<<<<<< HEAD
         metadata_rows: List = initial_data["contents"][
             "twoColumnWatchNextResults"
         ]["results"]["results"]["contents"][1]["videoSecondaryInfoRenderer"][
+=======
+        metadata_rows: List = initial_data["contents"]["twoColumnWatchNextResults"][
+            "results"
+        ]["results"]["contents"][1]["videoSecondaryInfoRenderer"][
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
             "metadataRowContainer"
         ]["metadataRowContainerRenderer"]["rows"]
     except (KeyError, IndexError):
@@ -556,9 +587,13 @@ def metadata(initial_data) -> Optional[YouTubeMetadata]:
 
     # Rows appear to only have "metadataRowRenderer" or "metadataRowHeaderRenderer"
     #  and we only care about the former, so we filter the others
+<<<<<<< HEAD
     metadata_rows = filter(
         lambda x: "metadataRowRenderer" in x.keys(), metadata_rows
     )
+=======
+    metadata_rows = filter(lambda x: "metadataRowRenderer" in x.keys(), metadata_rows)
+>>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
     # We then access the metadataRowRenderer key in each element
     #  and build a metadata object from this new list
