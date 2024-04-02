@@ -2,9 +2,8 @@
 This module implements the core developer interface for pytube .
 
 The problem domain of the :class:`YouTube <YouTube> class focuses almost
-exclusively on the developer interface. tuber.pytubeoffloads the heavy lifting to
+exclusively on the developer interface. Pytube offloads the heavy lifting to
 smaller peripheral modules and functions.
-
 """
 
 from typing import Any, Callable, Dict, List, Optional
@@ -18,12 +17,9 @@ from pytube.logging import base_logger
 from pytube.metadata import YouTubeMetadata
 from pytube.monostate import Monostate
 
-<<<<<<< HEAD
-=======
 from pytube.logging import base_logger
 
 
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
