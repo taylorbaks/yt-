@@ -112,13 +112,9 @@ class RecordingUnavailable(VideoUnavailable):
 
     @property
     def error_string(self):
-<<<<<<< HEAD
         return (
             f"{self.video_id} does not have a live stream recording available"
         )
-=======
-        return f"{self.video_id} does not have a live stream recording available"
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
 
 class MembersOnly(VideoUnavailable):

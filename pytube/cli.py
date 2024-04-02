@@ -17,13 +17,6 @@ from pytube import CaptionQuery, Playlist, Stream, YouTube, __version__
 from pytube.helpers import safe_filename, setup_logger
 from pytube.logging import base_logger
 
-<<<<<<< HEAD
-=======
-
-from pytube.logging import base_logger
-
-
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -60,13 +53,9 @@ def main():
         _perform_args_on_youtube(youtube, args)
 
 
-<<<<<<< HEAD
 def _perform_args_on_youtube(
     youtube: YouTube, args: argparse.Namespace
 ) -> None:
-=======
-def _perform_args_on_youtube(youtube: YouTube, args: argparse.Namespace) -> None:
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     if len(sys.argv) == 2:  # no arguments parsed
         download_highest_resolution_progressive(
             youtube=youtube, resolution="highest", target=args.target
@@ -103,14 +92,11 @@ def _parse_args(
         version="%(prog)s " + __version__,
     )
     parser.add_argument(
-<<<<<<< HEAD
         "--version",
         action="version",
         version="%(prog)s " + __version__,
     )
     parser.add_argument(
-=======
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         "--itag",
         type=int,
         help="The itag for the desired stream",

@@ -71,13 +71,9 @@ def find_object_from_startpoint(html, start_point):
     """
     html = html[start_point:]
     if html[0] not in ["{", "["]:
-<<<<<<< HEAD
         raise HTMLParseError(
             f"Invalid start point. Start of HTML:\n{html[:20]}"
         )
-=======
-        raise HTMLParseError(f"Invalid start point. Start of HTML:\n{html[:20]}")
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
     # First letter MUST be a open brace, so we put that in the stack,
     # and skip the first character.
@@ -121,7 +117,6 @@ def find_object_from_startpoint(html, start_point):
                 if not (
                     curr_char == "/"
                     and last_char
-<<<<<<< HEAD
                     not in [
                         "(",
                         ",",
@@ -136,9 +131,6 @@ def find_object_from_startpoint(html, start_point):
                         "}",
                         ";",
                     ]
-=======
-                    not in ["(", ",", "=", ":", "[", "!", "&", "|", "?", "{", "}", ";"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 ):
                     stack.append(curr_char)
 
@@ -192,17 +184,12 @@ def throttling_array_split(js_array):
             match = func_regex.search(curr_substring)
             match_start, match_end = match.span()
 
-<<<<<<< HEAD
             function_text = find_object_from_startpoint(
                 curr_substring, match.span()[1]
             )
             full_function_def = curr_substring[
                 : match_end + len(function_text)
             ]
-=======
-            function_text = find_object_from_startpoint(curr_substring, match.span()[1])
-            full_function_def = curr_substring[: match_end + len(function_text)]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
             results.append(full_function_def)
             curr_substring = curr_substring[len(full_function_def) + 1 :]
         else:

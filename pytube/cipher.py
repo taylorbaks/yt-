@@ -22,12 +22,6 @@ from pytube.helpers import cache, regex_search
 from pytube.logging import base_logger
 from pytube.parser import find_object_from_startpoint, throttling_array_split
 
-<<<<<<< HEAD
-=======
-from pytube.logging import base_logger
-
-
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -316,13 +310,9 @@ def get_throttling_function_code(js: str) -> str:
     match = regex.search(js)
 
     # Extract the code within curly braces for the function itself, and merge any split lines
-<<<<<<< HEAD
     code_lines_list = find_object_from_startpoint(js, match.span()[1]).split(
         "\n"
     )
-=======
-    code_lines_list = find_object_from_startpoint(js, match.span()[1]).split("\n")
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     joined_lines = "".join(code_lines_list)
 
     # Prepend function definition (e.g. `Dea=function(a)`)
@@ -559,13 +549,9 @@ def throttling_cipher_function(d: list, e: str):
         e.split("")
     )
     """
-<<<<<<< HEAD
     h = list(
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
     )
-=======
-    h = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_")
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
     f = 96
     # by naming it "this" we can more closely reflect the js
     this = list(e)

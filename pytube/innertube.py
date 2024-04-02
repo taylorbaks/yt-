@@ -16,13 +16,9 @@ from urllib import parse
 from pytube import request
 
 # YouTube on TV client secrets
-<<<<<<< HEAD
 _client_id = (
     "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com"
 )
-=======
-_client_id = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com"
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 _client_secret = "SboVhoG9s0rNafixCSGGKXAT"
 
 # Extracted API keys -- unclear what these are linked to.
@@ -38,14 +34,10 @@ _api_keys = [
 _default_clients = {
     "WEB": {
         "context": {
-<<<<<<< HEAD
             "client": {
                 "clientName": "WEB",
                 "clientVersion": "2.20200720.00.02",
             }
-=======
-            "client": {"clientName": "WEB", "clientVersion": "2.20200720.00.02"}
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         },
         "header": {"User-Agent": "Mozilla/5.0"},
         "api_key": "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
@@ -203,13 +195,9 @@ _token_file = os.path.join(_cache_dir, "tokens.json")
 class InnerTube:
     """Object for interacting with the innertube API."""
 
-<<<<<<< HEAD
     def __init__(
         self, client="ANDROID_MUSIC", use_oauth=False, allow_cache=True
     ):
-=======
-    def __init__(self, client="ANDROID_MUSIC", use_oauth=False, allow_cache=True):
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         """Initialize an InnerTube object.
 
         :param str client:
@@ -341,15 +329,11 @@ class InnerTube:
     @property
     def base_params(self):
         """Return the base query parameters to transmit to the innertube API."""
-<<<<<<< HEAD
         return {
             "key": self.api_key,
             "contentCheckOk": True,
             "racyCheckOk": True,
         }
-=======
-        return {"key": self.api_key, "contentCheckOk": True, "racyCheckOk": True}
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
     def _call_api(self, endpoint, query, data):
         """Make a request to a given endpoint with the provided query parameters and data."""

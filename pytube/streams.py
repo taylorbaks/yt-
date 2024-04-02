@@ -6,12 +6,6 @@ combined). This was referred to as ``Video`` in the legacy tuber.pytubeversion, 
 has been renamed to accommodate DASH (which serves the audio and video
 separately).
 """
-<<<<<<< HEAD
-=======
-
-import os
-from math import ceil
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
 import os
 from datetime import datetime
@@ -26,12 +20,6 @@ from pytube.itags import get_format_profile
 from pytube.logging import base_logger
 from pytube.monostate import Monostate
 
-<<<<<<< HEAD
-=======
-from pytube.logging import base_logger
-
-
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -81,17 +69,12 @@ class Stream:
 
         # filesize in megabytes
         self._filesize_mb: Optional[float] = float(
-<<<<<<< HEAD
             ceil(float(stream.get("contentLength", 0)) / 1024 / 1024 * 1000)
             / 1000
-=======
-            ceil(float(stream.get("contentLength", 0)) / 1024 / 1024 * 1000) / 1000
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         )
 
         # filesize in gigabytes(fingers crossed we don't need terabytes going forward though)
         self._filesize_gb: Optional[float] = float(
-<<<<<<< HEAD
             ceil(
                 float(stream.get("contentLength", 0))
                 / 1024
@@ -99,9 +82,6 @@ class Stream:
                 / 1024
                 * 1000
             )
-=======
-            ceil(float(stream.get("contentLength", 0)) / 1024 / 1024 / 1024 * 1000)
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
             / 1000
         )
 
@@ -112,13 +92,9 @@ class Stream:
         self.abr = itag_profile["abr"]  # average bitrate (audio streams only)
         if "fps" in stream:
             self.fps = stream["fps"]  # Video streams only
-<<<<<<< HEAD
         self.resolution = itag_profile[
             "resolution"
         ]  # resolution (e.g.: "480p")
-=======
-        self.resolution = itag_profile["resolution"]  # resolution (e.g.: "480p")
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         self.is_3d = itag_profile["is_3d"]
         self.is_hdr = itag_profile["is_hdr"]
         self.is_live = itag_profile["is_live"]
@@ -229,23 +205,15 @@ class Stream:
         if self._filesize_mb == 0:
             try:
                 self._filesize_mb = float(
-<<<<<<< HEAD
                     ceil(request.filesize(self.url) / 1024 / 1024 * 1000)
                     / 1000
-=======
-                    ceil(request.filesize(self.url) / 1024 / 1024 * 1000) / 1000
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 )
             except HTTPError as e:
                 if e.code != 404:
                     raise
                 self._filesize_mb = float(
-<<<<<<< HEAD
                     ceil(request.seq_filesize(self.url) / 1024 / 1024 * 1000)
                     / 1000
-=======
-                    ceil(request.seq_filesize(self.url) / 1024 / 1024 * 1000) / 1000
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 )
         return self._filesize_mb
 
@@ -260,20 +228,15 @@ class Stream:
         if self._filesize_gb == 0:
             try:
                 self._filesize_gb = float(
-<<<<<<< HEAD
                     ceil(
                         request.filesize(self.url) / 1024 / 1024 / 1024 * 1000
                     )
                     / 1000
-=======
-                    ceil(request.filesize(self.url) / 1024 / 1024 / 1024 * 1000) / 1000
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 )
             except HTTPError as e:
                 if e.code != 404:
                     raise
                 self._filesize_gb = float(
-<<<<<<< HEAD
                     ceil(
                         request.seq_filesize(self.url)
                         / 1024
@@ -281,9 +244,6 @@ class Stream:
                         / 1024
                         * 1000
                     )
-=======
-                    ceil(request.seq_filesize(self.url) / 1024 / 1024 / 1024 * 1000)
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                     / 1000
                 )
         return self._filesize_gb
@@ -381,13 +341,9 @@ class Stream:
             return file_path
 
         bytes_remaining = self.filesize
-<<<<<<< HEAD
         logger.debug(
             f"downloading ({self.filesize} total bytes) file to {file_path}"
         )
-=======
-        logger.debug(f"downloading ({self.filesize} total bytes) file to {file_path}")
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
         with open(file_path, "wb") as fh:
             try:
