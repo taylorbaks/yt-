@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """Module for interacting with a user's youtube channel."""
+
 import json
-import logging
 from typing import Dict, List, Optional, Tuple
 
 from pytube import extract, Playlist, request
 from pytube.helpers import uniqueify
 
-logger = logging.getLogger(__name__)
+from pytube.logging import base_logger
+
+
+logger = base_logger.getChild(__name__)
 
 
 class Channel(Playlist):
@@ -23,15 +26,13 @@ class Channel(Playlist):
 
         self.channel_uri = extract.channel_name(url)
 
-        self.channel_url = (
-            f"https://www.youtube.com{self.channel_uri}"
-        )
+        self.channel_url = f"https://www.youtube.com{self.channel_uri}"
 
-        self.videos_url = self.channel_url + '/videos'
-        self.playlists_url = self.channel_url + '/playlists'
-        self.community_url = self.channel_url + '/community'
-        self.featured_channels_url = self.channel_url + '/channels'
-        self.about_url = self.channel_url + '/about'
+        self.videos_url = self.channel_url + "/videos"
+        self.playlists_url = self.channel_url + "/playlists"
+        self.community_url = self.channel_url + "/community"
+        self.featured_channels_url = self.channel_url + "/channels"
+        self.about_url = self.channel_url + "/about"
 
         # Possible future additions
         self._playlists_html = None
@@ -45,7 +46,7 @@ class Channel(Playlist):
 
         :rtype: str
         """
-        return self.initial_data['metadata']['channelMetadataRenderer']['title']
+        return self.initial_data["metadata"]["channelMetadataRenderer"]["title"]
 
     @property
     def channel_id(self):
@@ -55,7 +56,7 @@ class Channel(Playlist):
 
         :rtype: str
         """
-        return self.initial_data['metadata']['channelMetadataRenderer']['externalId']
+        return self.initial_data["metadata"]["channelMetadataRenderer"]["externalId"]
 
     @property
     def vanity_url(self):
@@ -65,7 +66,9 @@ class Channel(Playlist):
 
         :rtype: str
         """
-        return self.initial_data['metadata']['channelMetadataRenderer'].get('vanityChannelUrl', None)  # noqa:E501
+        return self.initial_data["metadata"]["channelMetadataRenderer"].get(
+            "vanityChannelUrl", None
+        )  # noqa:E501
 
     @property
     def html(self):
@@ -148,36 +151,36 @@ class Channel(Playlist):
         # this is the json tree structure, if the json was extracted from
         # html
         try:
-            videos = initial_data["contents"][
-                "twoColumnBrowseResultsRenderer"][
-                "tabs"][1]["tabRenderer"]["content"][
-                "sectionListRenderer"]["contents"][0][
-                "itemSectionRenderer"]["contents"][0][
-                "gridRenderer"]["items"]
+            videos = initial_data["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][
+                1
+            ]["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0][
+                "itemSectionRenderer"
+            ]["contents"][0]["gridRenderer"]["items"]
         except (KeyError, IndexError, TypeError):
             try:
                 # this is the json tree structure, if the json was directly sent
                 # by the server in a continuation response
-                important_content = initial_data[1]['response']['onResponseReceivedActions'][
-                    0
-                ]['appendContinuationItemsAction']['continuationItems']
+                important_content = initial_data[1]["response"][
+                    "onResponseReceivedActions"
+                ][0]["appendContinuationItemsAction"]["continuationItems"]
                 videos = important_content
             except (KeyError, IndexError, TypeError):
                 try:
                     # this is the json tree structure, if the json was directly sent
                     # by the server in a continuation response
                     # no longer a list and no longer has the "response" key
-                    important_content = initial_data['onResponseReceivedActions'][0][
-                        'appendContinuationItemsAction']['continuationItems']
+                    important_content = initial_data["onResponseReceivedActions"][0][
+                        "appendContinuationItemsAction"
+                    ]["continuationItems"]
                     videos = important_content
                 except (KeyError, IndexError, TypeError) as p:
                     logger.info(p)
                     return [], None
 
         try:
-            continuation = videos[-1]['continuationItemRenderer'][
-                'continuationEndpoint'
-            ]['continuationCommand']['token']
+            continuation = videos[-1]["continuationItemRenderer"][
+                "continuationEndpoint"
+            ]["continuationCommand"]["token"]
             videos = videos[:-1]
         except (KeyError, IndexError):
             # if there is an error, no continuation is available
@@ -189,11 +192,8 @@ class Channel(Playlist):
                 list(
                     # only extract the video ids from the video data
                     map(
-                        lambda x: (
-                            f"/watch?v="
-                            f"{x['gridVideoRenderer']['videoId']}"
-                        ),
-                        videos
+                        lambda x: (f"/watch?v=" f"{x['gridVideoRenderer']['videoId']}"),
+                        videos,
                     )
                 ),
             ),
