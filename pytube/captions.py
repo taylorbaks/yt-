@@ -88,10 +88,10 @@ class Caption:
             text = child.text or ""
             caption = unescape(text.replace("\n", " ").replace("  ", " "),)
             try:
-                duration = float(child.attrib["d"])
+                duration = float(child.attrib["d"])/1000
             except KeyError:
                 duration = 0.0
-            start = float(child.attrib["t"])
+            start = float(child.attrib["t"])/1000
             end = start + duration
             sequence_number = i + 1  # convert from 0-indexed to 1.
             line = "{seq}\n{start} --> {end}\n{text}\n".format(
