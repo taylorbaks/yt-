@@ -19,7 +19,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from pytube.exceptions import ExtractError, RegexMatchError
 from pytube.helpers import cache, regex_search
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 from pytube.parser import find_object_from_startpoint, throttling_array_split
 
 logger = base_logger.getChild(__name__)

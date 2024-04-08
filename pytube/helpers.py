@@ -11,7 +11,7 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar
 from urllib import request
 
 from pytube.exceptions import RegexMatchError
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 
 logger = base_logger.getChild(__name__)
 

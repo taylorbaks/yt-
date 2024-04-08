@@ -15,7 +15,7 @@ from typing import List, Optional
 import pytube.exceptions as exceptions
 from pytube import CaptionQuery, Playlist, Stream, YouTube, __version__
 from pytube.helpers import safe_filename, setup_logger
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 
 logger = base_logger.getChild(__name__)
 

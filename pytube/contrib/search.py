@@ -5,7 +5,7 @@
 # Local imports
 from pytube import YouTube
 from pytube.innertube import InnerTube
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 
 logger = base_logger.getChild(__name__)
 

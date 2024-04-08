@@ -13,11 +13,9 @@ import pytube.exceptions as exceptions
 from pytube import Stream, StreamQuery, extract, request
 from pytube.helpers import install_proxy
 from pytube.innertube import InnerTube
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 from pytube.metadata import YouTubeMetadata
 from pytube.monostate import Monostate
-
-from pytube.logging import base_logger
 
 
 logger = base_logger.getChild(__name__)

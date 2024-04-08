@@ -17,7 +17,7 @@ from urllib.parse import parse_qs
 from pytube import extract, request
 from pytube.helpers import safe_filename, target_directory
 from pytube.itags import get_format_profile
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 from pytube.monostate import Monostate
 
 logger = base_logger.getChild(__name__)

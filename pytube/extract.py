@@ -10,7 +10,7 @@ from urllib.parse import parse_qs, quote, urlencode, urlparse
 from pytube.cipher import Cipher
 from pytube.exceptions import HTMLParseError, LiveStreamError, RegexMatchError
 from pytube.helpers import regex_search
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 from pytube.metadata import YouTubeMetadata
 from pytube.parser import parse_for_all_objects, parse_for_object
 

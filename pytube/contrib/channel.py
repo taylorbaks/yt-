@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Tuple
 
 from pytube import Playlist, extract, request
 from pytube.helpers import uniqueify
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 
 logger = base_logger.getChild(__name__)
 

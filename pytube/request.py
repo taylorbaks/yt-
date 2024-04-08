@@ -11,7 +11,7 @@ from urllib.request import Request, urlopen
 
 from pytube.exceptions import MaxRetriesExceeded, RegexMatchError
 from pytube.helpers import regex_search
-from pytube.logging import base_logger
+from pytube.logger import base_logger
 
 logger = base_logger.getChild(__name__)
 default_range_size = 9437184  # 9MB
