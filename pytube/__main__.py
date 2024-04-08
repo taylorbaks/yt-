@@ -231,13 +231,9 @@ class YouTube:
                 ):
                     raise exceptions.MembersOnly(video_id=self.video_id)
                 elif reason == "This live stream recording is not available.":
-<<<<<<< HEAD
                     raise exceptions.RecordingUnavailable(
                         video_id=self.video_id
                     )
-=======
-                    raise exceptions.RecordingUnavailable(video_id=self.video_id)
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 else:
                     raise exceptions.VideoUnavailable(video_id=self.video_id)
             elif status == "LOGIN_REQUIRED":
@@ -278,13 +274,9 @@ class YouTube:
         )
         innertube_response = innertube.player(self.video_id)
 
-<<<<<<< HEAD
         playability_status = innertube_response["playabilityStatus"].get(
             "status", None
         )
-=======
-        playability_status = innertube_response["playabilityStatus"].get("status", None)
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
         # If we still can't access the video, raise an exception
         # (tier 3 age restriction)

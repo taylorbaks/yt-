@@ -14,12 +14,6 @@ from pytube.helpers import (
 )
 from pytube.logging import base_logger
 
-<<<<<<< HEAD
-=======
-from pytube.logging import base_logger
-
-
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -200,14 +194,10 @@ class Playlist(Sequence):
             {
                 "continuation": continuation,
                 "context": {
-<<<<<<< HEAD
                     "client": {
                         "clientName": "WEB",
                         "clientVersion": "2.20200720.00.02",
                     }
-=======
-                    "client": {"clientName": "WEB", "clientVersion": "2.20200720.00.02"}
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 },
             },
         )
@@ -228,13 +218,9 @@ class Playlist(Sequence):
             # html
             section_contents = initial_data["contents"][
                 "twoColumnBrowseResultsRenderer"
-<<<<<<< HEAD
             ]["tabs"][0]["tabRenderer"]["content"]["sectionListRenderer"][
                 "contents"
             ]
-=======
-            ]["tabs"][0]["tabRenderer"]["content"]["sectionListRenderer"]["contents"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
             try:
                 # Playlist without submenus
                 important_content = section_contents[0]["itemSectionRenderer"][
@@ -251,15 +237,9 @@ class Playlist(Sequence):
                 # this is the json tree structure, if the json was directly sent
                 # by the server in a continuation response
                 # no longer a list and no longer has the "response" key
-<<<<<<< HEAD
                 important_content = initial_data["onResponseReceivedActions"][
                     0
                 ]["appendContinuationItemsAction"]["continuationItems"]
-=======
-                important_content = initial_data["onResponseReceivedActions"][0][
-                    "appendContinuationItemsAction"
-                ]["continuationItems"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                 videos = important_content
             except (KeyError, IndexError, TypeError) as p:
                 logger.info(p)
@@ -358,15 +338,9 @@ class Playlist(Sequence):
         :return: Date of last playlist update where possible, else the string provided
         :rtype: datetime.date
         """
-<<<<<<< HEAD
         last_updated_text = self.sidebar_info[0][
             "playlistSidebarPrimaryInfoRenderer"
         ]["stats"][2]["runs"][1]["text"]
-=======
-        last_updated_text = self.sidebar_info[0]["playlistSidebarPrimaryInfoRenderer"][
-            "stats"
-        ][2]["runs"][1]["text"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         try:
             date_components = last_updated_text.split()
             month = date_components[0]
@@ -384,15 +358,9 @@ class Playlist(Sequence):
         :return: playlist title (name)
         :rtype: Optional[str]
         """
-<<<<<<< HEAD
         return self.sidebar_info[0]["playlistSidebarPrimaryInfoRenderer"][
             "title"
         ]["runs"][0]["text"]
-=======
-        return self.sidebar_info[0]["playlistSidebarPrimaryInfoRenderer"]["title"][
-            "runs"
-        ][0]["text"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 
     @property
     def description(self) -> str:
@@ -407,15 +375,9 @@ class Playlist(Sequence):
         :return: Playlist video count
         :rtype: int
         """
-<<<<<<< HEAD
         count_text = self.sidebar_info[0][
             "playlistSidebarPrimaryInfoRenderer"
         ]["stats"][0]["runs"][0]["text"]
-=======
-        count_text = self.sidebar_info[0]["playlistSidebarPrimaryInfoRenderer"][
-            "stats"
-        ][0]["runs"][0]["text"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         count_text = count_text.replace(",", "")
         return int(count_text)
 
@@ -427,15 +389,9 @@ class Playlist(Sequence):
         :rtype: int
         """
         # "1,234,567 views"
-<<<<<<< HEAD
         views_text = self.sidebar_info[0][
             "playlistSidebarPrimaryInfoRenderer"
         ]["stats"][1]["simpleText"]
-=======
-        views_text = self.sidebar_info[0]["playlistSidebarPrimaryInfoRenderer"][
-            "stats"
-        ][1]["simpleText"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         # "1,234,567"
         count_text = views_text.split()[0]
         # "1234567"

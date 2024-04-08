@@ -7,13 +7,6 @@ from pytube import YouTube
 from pytube.innertube import InnerTube
 from pytube.logging import base_logger
 
-<<<<<<< HEAD
-=======
-
-from pytube.logging import base_logger
-
-
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
 logger = base_logger.getChild(__name__)
 
 
@@ -100,15 +93,9 @@ class Search:
 
         # Initial result is handled by try block, continuations by except block
         try:
-<<<<<<< HEAD
             sections = raw_results["contents"][
                 "twoColumnSearchResultsRenderer"
             ]["primaryContents"]["sectionListRenderer"]["contents"]
-=======
-            sections = raw_results["contents"]["twoColumnSearchResultsRenderer"][
-                "primaryContents"
-            ]["sectionListRenderer"]["contents"]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
         except KeyError:
             sections = raw_results["onResponseReceivedCommands"][0][
                 "appendContinuationItemsAction"
@@ -193,27 +180,17 @@ class Search:
                 #  and scheduled releases do not have 'viewCountText'
                 if "viewCountText" in vid_renderer:
                     if "runs" in vid_renderer["viewCountText"]:
-<<<<<<< HEAD
                         vid_view_count_text = vid_renderer["viewCountText"][
                             "runs"
                         ][0]["text"]
-=======
-                        vid_view_count_text = vid_renderer["viewCountText"]["runs"][0][
-                            "text"
-                        ]
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                     else:
                         vid_view_count_text = vid_renderer["viewCountText"][
                             "simpleText"
                         ]
                     # Strip ' views' text, then remove commas
-<<<<<<< HEAD
                     stripped_text = vid_view_count_text.split()[0].replace(
                         ",", ""
                     )
-=======
-                    stripped_text = vid_view_count_text.split()[0].replace(",", "")
->>>>>>> 8b3070f79353ac4ea83ae2e117400fa8cd369b0b
                     if stripped_text == "No":
                         vid_view_count = 0
                     else:
