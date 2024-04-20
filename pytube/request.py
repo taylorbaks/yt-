@@ -159,6 +159,11 @@ def stream(
                     method="GET",
                     timeout=timeout
                 )
+                chunk = response.read()
+                if not chunk:
+                    break
+                downloaded += len(chunk)
+                yield chunk
             except URLError as e:
                 # We only want to skip over timeout errors, and
                 # raise any other URLError exceptions
@@ -185,12 +190,12 @@ def stream(
                 file_size = int(content_range)
             except (KeyError, IndexError, ValueError) as e:
                 logger.error(e)
-        while True:
-            chunk = response.read()
-            if not chunk:
-                break
-            downloaded += len(chunk)
-            yield chunk
+        # while True:
+        #     chunk = response.read()
+        #     if not chunk:
+        #         break
+        #     downloaded += len(chunk)
+        #     yield chunk
     return  # pylint: disable=R1711
 
 
