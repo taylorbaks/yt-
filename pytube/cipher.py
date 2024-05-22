@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 class Cipher:
     def __init__(self, js: str):
         self.transform_plan: List[str] = get_transform_plan(js)
-        var_regex = re.compile(r"^\w+\W")
+var_regex = re.compile(r"^\w+\W")
         var_match = var_regex.search(self.transform_plan[0])
         if not var_match:
             raise RegexMatchError(
@@ -408,7 +408,8 @@ def get_throttling_plan(js: str):
     plan_regex = re.compile(transform_start)
     match = plan_regex.search(raw_code)
 
-    transform_plan_raw = find_object_from_startpoint(raw_code, match.span()[1] - 1)
+    # transform_plan_raw = find_object_from_startpoint(raw_code, match.span()[1] - 1)
+    transform_plan_raw = js # this changes works fine until one find alternative solution
 
     # Steps are either c[x](c[y]) or c[x](c[y],c[z])
     step_start = r"c\[(\d+)\]\(c\[(\d+)\](,c(\[(\d+)\]))?\)"
