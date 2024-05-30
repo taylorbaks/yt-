@@ -8,21 +8,28 @@ from unittest import mock
 from pytube import helpers
 from pytube.exceptions import RegexMatchError
 from pytube.helpers import cache, create_mock_html_json, deprecated, setup_logger
-from pytube.helpers import target_directory, uniqueify
+from pytube.helpers import target_directory, uniqueify, regex_search
 
+def test_regex_search_no_match():
+    with pytest.raises(RegexMatchError):
+        helpers.regex_search("^a$", "", group=0)
 
 def test_regex_search():
-    # Test case where the pattern does not match the string
     with pytest.raises(RegexMatchError):
-        helpers.regex_search("^a$", "", group=0) 
+        helpers.regex_search("^a$", "", group=0)
 
-    # Test case where the pattern matches the string
     assert helpers.regex_search("^a$", "a", group=0) == "a"
 
-    # Additional test cases to cover more scenarios
-    assert helpers.regex_search("nkGr1", "Fr@nkGr1ff1N", group=0) == "nkGr1"
-    assert helpers.regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=1) == "Fr@nk"
-    assert helpers.regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=2) == "ff1N"
+def test_regex_search_case_insensitive():
+    assert regex_search("A", "FrAnkGr1ff1N", group=0).lower() == "a"
+
+def test_regex_search_multiple_groups():
+    assert regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=1) == "Fr@nk"
+    assert regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=2) == "ff1N"
+
+def test_regex_search_group_out_of_range():
+    with pytest.raises(IndexError):
+        regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=3)
 
 
 def test_safe_filename():
