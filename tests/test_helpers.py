@@ -11,13 +11,18 @@ from pytube.helpers import cache, create_mock_html_json, deprecated, setup_logge
 from pytube.helpers import target_directory, uniqueify
 
 
-def test_regex_search_no_match():
-    with pytest.raises(RegexMatchError):
-        helpers.regex_search("^a$", "", group=0)
-
-
 def test_regex_search():
+    # Test case where the pattern does not match the string
+    with pytest.raises(RegexMatchError):
+        helpers.regex_search("^a$", "", group=0) 
+
+    # Test case where the pattern matches the string
     assert helpers.regex_search("^a$", "a", group=0) == "a"
+
+    # Additional test cases to cover more scenarios
+    assert helpers.regex_search("nkGr1", "Fr@nkGr1ff1N", group=0) == "nkGr1"
+    assert helpers.regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=1) == "Fr@nk"
+    assert helpers.regex_search("(Fr@nk)Gr1(ff1N)", "Fr@nkGr1ff1N", group=2) == "ff1N"
 
 
 def test_safe_filename():
