@@ -10,6 +10,7 @@ import os
 import pathlib
 import time
 from urllib import parse
+from typing import Optional
 
 # Local imports
 from pytube import request
@@ -447,11 +448,13 @@ class InnerTube:
         query.update(self.base_params)
         return self._call_api(endpoint, query, self.base_data)
 
-    def search(self, search_query, continuation=None):
+    def search(self, search_query, search_params: Optional[str]=None, continuation=None):
         """Make a request to the search endpoint.
 
         :param str search_query:
             The query to search.
+        :param str search_params:
+            Additional search parameters.
         :rtype: dict
         :returns:
             Raw search query results.
@@ -460,6 +463,10 @@ class InnerTube:
         query = {
             'query': search_query
         }
+
+        if search_params:
+            query['params'] = search_params
+
         query.update(self.base_params)
         data = {}
         if continuation:

@@ -1,6 +1,7 @@
 """Module for interacting with YouTube search."""
 # Native python imports
 import logging
+from typing import Optional
 
 # Local imports
 from pytube import YouTube
@@ -11,13 +12,16 @@ logger = logging.getLogger(__name__)
 
 
 class Search:
-    def __init__(self, query):
+    def __init__(self, query, params: Optional[str] = None):
         """Initialize Search object.
 
         :param str query:
             Search query provided by the user.
+        :param str params:
+            Additional parameters to be passed to the search query.
         """
         self.query = query
+        self.params = params
         self._innertube_client = InnerTube(client='WEB')
 
         # The first search, without a continuation, is structured differently
@@ -219,7 +223,7 @@ class Search:
         :returns:
             The raw json object returned by the innertube API.
         """
-        query_results = self._innertube_client.search(self.query, continuation)
+        query_results = self._innertube_client.search(self.query, self.params, continuation)
         if not self._initial_results:
             self._initial_results = query_results
         return query_results  # noqa:R504
