@@ -76,31 +76,39 @@ class Caption:
         return time_fmt + ms
 
     def xml_caption_to_srt(self, xml_captions: str) -> str:
-        """Convert xml caption tracks to "SubRip Subtitle (srt)".
+    """Convert xml caption tracks to "SubRip Subtitle (srt)" format.
 
-        :param str xml_captions:
-            XML formatted caption tracks.
-        """
-        segments = []
-        root = ElementTree.fromstring(xml_captions)
-        for i, child in enumerate(list(root)):
-            text = child.text or ""
-            caption = unescape(text.replace("\n", " ").replace("  ", " "),)
-            try:
-                duration = float(child.attrib["dur"])
-            except KeyError:
-                duration = 0.0
+    :param str xml_captions:
+        XML formatted caption tracks.
+    """
+    segments = []
+    root = ElementTree.fromstring(xml_captions)
+    for i, child in enumerate(list(root)):
+        text = child.text or ""
+        caption = unescape(text.replace("\n", " ").replace("  ", " "),)
+
+        try:
+            duration = float(child.attrib["dur"])
+        except KeyError:
+            duration = 0.0
+
+        try:
             start = float(child.attrib["start"])
-            end = start + duration
-            sequence_number = i + 1  # convert from 0-indexed to 1.
-            line = "{seq}\n{start} --> {end}\n{text}\n".format(
-                seq=sequence_number,
-                start=self.float_to_srt_time_format(start),
-                end=self.float_to_srt_time_format(end),
-                text=caption,
-            )
-            segments.append(line)
-        return "\n".join(segments).strip()
+        except KeyError:
+            start = 0.0
+
+        end = start + duration
+        sequence_number = i + 1
+
+        line = "{seq}\n{start} --> {end}\n{text}\n".format(
+            seq=sequence_number,
+            start=self.float_to_srt_time_format(start),
+            end=self.float_to_srt_time_format(end),
+            text=caption,
+        )
+        segments.append(line)
+    return "\n".join(segments).strip()
+
 
     def download(
         self,
