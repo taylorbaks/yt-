@@ -224,8 +224,7 @@ def get_transform_object(js: str, var: str) -> List[str]:
     regex = re.compile(pattern, flags=re.DOTALL)
     transform_match = regex.search(js)
     if not transform_match:
-        logger.error(f"no match found for pattern: {pattern}")
-        return []
+        raise RegexMatchError(caller="get_transform_object", pattern=pattern)
 
     return transform_match.group(1).replace("\n", " ").split(", ")
 
@@ -262,7 +261,6 @@ def get_throttling_function_name(js: str) -> str:
     :returns:
         The name of the function used to compute the throttling parameter.
     """
-    logger.info("function_patterns @Jul_17_2024")
     function_patterns = [
         # https://github.com/ytdl-org/youtube-dl/issues/29326#issuecomment-865985377
         # https://github.com/yt-dlp/yt-dlp/commit/48416bc4a8f1d5ff07d5977659cb8ece7640dcd8
@@ -271,16 +269,7 @@ def get_throttling_function_name(js: str) -> str:
         # a.C && (b = a.get("n")) && (b = Bpa[0](b), a.set("n", b),
         # Bpa.length || iha("")) }};
         # In the above case, `iha` is the relevant function name
-        #r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&\s*'
-        #r'\([a-z]\s*=\s*([a-zA-Z0-9$]+)(\[\d+\])?\([a-z]\)',
-
-        # starts from 2023 Aug
-        # r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&.*?\|\|\s*([a-z]+)',
-        # r'\([a-z]\s*=\s*([a-zA-Z0-9$]+)(\[\d+\])\([a-z]\)',
-
-        # starts from 2024 Jul
-        r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&\s*'
-        r'\([a-z]\s*=\s*([a-zA-Z0-9$]+)(\[\d+\])?\([a-z]\)',
+        r'a\.[a-zA-Z]\s*&&\s*\([a-z]\s*=\s*a\.get\("n"\)\)\s*&&.*?\|\|\s*([a-z]+)',
         r'\([a-z]\s*=\s*([a-zA-Z0-9$]+)(\[\d+\])\([a-z]\)',
     ]
     logger.debug('Finding throttling function name')
@@ -295,7 +284,7 @@ def get_throttling_function_name(js: str) -> str:
             if idx:
                 idx = idx.strip("[]")
                 array = re.search(
-                    r'var {nfunc}\s*=\s*(\[.+?\])'.format(
+                    r'var {nfunc}\s*=\s*(\[.+?\]);'.format(
                         nfunc=re.escape(function_match.group(1))),
                     js
                 )
@@ -419,8 +408,7 @@ def get_throttling_plan(js: str):
     plan_regex = re.compile(transform_start)
     match = plan_regex.search(raw_code)
 
-    transform_plan_raw = js 
-    # find_object_from_startpoint(raw_code, match.span()[1] - 1)
+    transform_plan_raw = find_object_from_startpoint(raw_code, match.span()[1] - 1)
 
     # Steps are either c[x](c[y]) or c[x](c[y],c[z])
     step_start = r"c\[(\d+)\]\(c\[(\d+)\](,c(\[(\d+)\]))?\)"
