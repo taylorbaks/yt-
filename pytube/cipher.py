@@ -262,6 +262,7 @@ def get_throttling_function_name(js: str) -> str:
     :returns:
         The name of the function used to compute the throttling parameter.
     """
+    logger.info("function_patterns @Jul_17_2024")
     function_patterns = [
         # https://github.com/ytdl-org/youtube-dl/issues/29326#issuecomment-865985377
         # https://github.com/yt-dlp/yt-dlp/commit/48416bc4a8f1d5ff07d5977659cb8ece7640dcd8
