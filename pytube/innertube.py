@@ -393,6 +393,11 @@ class InnerTube:
 
         headers.update(self.header)
 
+        print("---request---");
+        print(endpoint_url);
+        print("headers:\n", headers);
+        print("data:\n", data);
+        print("-------------");
         response = request._execute_request(
             endpoint_url,
             'POST',
