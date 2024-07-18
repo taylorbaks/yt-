@@ -82,22 +82,24 @@ class Caption:
           XML formatted caption tracks.
       """
       segments = []
-      root = ElementTree.fromstring(xml_captions)[1]
-      i=0
-      for child in list(root):
-          if child.tag == 'p':
-              caption = ''
-              if len(list(child))==0:
-                  continue
-              for s in list(child):
-                  if s.tag == 's':
-                      caption += ' ' + s.text
-              caption = unescape(caption.replace("\n", " ").replace("  ", " "),)
+      try:
+          root = ElementTree.fromstring(xml_captions)
+      except ElementTree.ParseError as e:
+          print(f"Warning: Failed to parse the XML captions. Error: {e}")
+          return ""  # Return an empty string if parsing fails
+
+      try:
+          for i, child in enumerate(list(root[0])):  # Assuming the first child is the correct element
+              text = child.text or ""
+              caption = unescape(text.replace("\n", " ").replace("  ", " "),)
               try:
-                  duration = float(child.attrib["d"])/1000.0
+                  duration = float(child.attrib["d"]) / 1000.0
               except KeyError:
                   duration = 0.0
-              start = float(child.attrib["t"])/1000.0
+              try:
+                  start = float(child.attrib["t"]) / 1000.0
+              except KeyError:
+                  start = 0.0
               end = start + duration
               sequence_number = i + 1  # convert from 0-indexed to 1.
               line = "{seq}\n{start} --> {end}\n{text}\n".format(
@@ -107,7 +109,12 @@ class Caption:
                   text=caption,
               )
               segments.append(line)
-              i += 1
+
+      except IndexError as e:
+          print(f"Warning: The XML structure does not contain the expected elements. Error: {e}")
+      except Exception as e:
+          print(f"An unexpected error occurred: {e}")
+
       return "\n".join(segments).strip()
 
 
