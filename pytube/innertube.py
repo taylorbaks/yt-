@@ -45,8 +45,7 @@ _default_clients = {
         'context': {
             'client': {
                 'clientName': 'ANDROID',
-                #'clientVersion': '17.31.35',
-                'clientVersion': '19.08.35',
+                'clientVersion': '17.31.35',
                 'androidSdkVersion': 30
             }
         },
@@ -59,8 +58,7 @@ _default_clients = {
         'context': {
             'client': {
                 'clientName': 'IOS',
-                #'clientVersion': '17.33.2',
-                'clientVersion': '19.08.35',
+                'clientVersion': '17.33.2',
                 'deviceModel': 'iPhone14,3'
             }
         },
@@ -87,8 +85,7 @@ _default_clients = {
         'context': {
             'client': {
                 'clientName': 'ANDROID_EMBEDDED_PLAYER',
-                #'clientVersion': '17.31.35',
-                'clientVersion': '19.08.35',
+                'clientVersion': '17.31.35',
                 'clientScreen': 'EMBED',
                 'androidSdkVersion': 30,
             }
@@ -102,8 +99,7 @@ _default_clients = {
         'context': {
             'client': {
                 'clientName': 'IOS_MESSAGES_EXTENSION',
-                #'clientVersion': '17.33.2',
-                'clientVersion': '19.08.35',
+                'clientVersion': '17.33.2',
                 'deviceModel': 'iPhone14,3'
             }
         },
@@ -129,8 +125,7 @@ _default_clients = {
         'context': {
             'client': {
                 'clientName': 'ANDROID_MUSIC',
-                #'clientVersion': '5.16.51',
-                'clientVersion': '6.40.52',
+                'clientVersion': '5.16.51',
                 'androidSdkVersion': 30
             }
         },
@@ -143,8 +138,7 @@ _default_clients = {
         'context': {
             'client': {
                 'clientName': 'IOS_MUSIC',
-                #'clientVersion': '5.21',
-                'clientVersion': '6.41',
+                'clientVersion': '5.21',
                 'deviceModel': 'iPhone14,3'
             }
         },
@@ -393,11 +387,6 @@ class InnerTube:
 
         headers.update(self.header)
 
-        print("---request---");
-        print(endpoint_url);
-        print("headers:\n", headers);
-        print("data:\n", data);
-        print("-------------");
         response = request._execute_request(
             endpoint_url,
             'POST',
