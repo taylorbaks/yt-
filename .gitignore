@@ -136,8 +136,10 @@ test/**/*.xml
 *.sublime-project
 
 # Common virtual environments
+.venv/
 venv/
 env/
+.env
 
 # Token cache location
 __cache__/
